@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link 
+      rel="stylesheet" 
+        href="{{ url_for('static', filename='css/styles_index.css') }}" 
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link 
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200&display=swap"
+    />
+
+    <link 
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <title>Welcome Page</title>
+    
+  </head>
+  <body>
+
+    <div class="header">
+      <h1 style="margin-left: 80px;">Welcome, Stephanie!</h1>
+      <h1 style="margin-right: 80px;"><a href="/">Home</a></h1>
+    </div>
+
+    <div class="main_container">
+      <div class="populations_container">
+        <div class="links_container">
+          <h2 style="margin-bottom: 40px">Active Populations</h2>
+          <table>
+            {% for element in populations %}
+            <tr>
+              <td><a href="/population/{{ element[0] }}">{{element[0]}}</a></td>
+              <td>{{ element[1] }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+
+        <div class="chart">
+          <canvas id="pie-chart" width="350px" height="240px" ></canvas>
+        </div>
+        
+        <script>
+          const pie_data = "{% for element in populations %} {{element[1]}} {% endfor %}".split("  ");
+          const pie_labels = "{% for element in populations %} {{element[0]}} {% endfor %}".trim().split("  ");
+        </script>
+
+        <script src="{{ url_for('static', filename='js/pie_chart.js') }}"></script>
+      </div>
+
+      <div class="attendance_container">
+        <div class="links_container">
+          <h2 style="margin-bottom: 40px">Overall Attendance</h2>
+          <table>
+            {% for element in attendance %}
+            <tr>
+              <td><a href="/population/{{ element[0] }}">{{element[0]}}</a></td>
+              <td>{{element[1]}}%</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+
+        <div class="chart">
+          <canvas id="bar-chart" width="350px" height="240px"></canvas>
+        </div>
+                
+        <script>
+          const bar_data = "{% for element in attendance %} {{element[1]}} {% endfor %}".split("  ");
+          const bar_labels = "{% for element in attendance %} {{element[0]}} {% endfor %}".trim().split("  ");
+        </script>
+
+        <script src="{{ url_for('static', filename='js/bar_chart.js') }}"></script>        
+      </div>
+    </div>
+
+    <div class="bottom">
+      <h3 style="margin-left: 20px;"><div id="clock"></div></h3>   
+      <script src="{{ url_for('static', filename='js/clock.js') }}"></script> 
+      <img src="/static/images/Epita.png" height="80%" alt="EPITA">
+      <h3 style="text-align: right; margin-right: 20px;">Made by Ilia Tiskin</h3>
+    </div>
+  </body>
+</html>
